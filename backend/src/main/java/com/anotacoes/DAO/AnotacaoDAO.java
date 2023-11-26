@@ -44,10 +44,22 @@ public class AnotacaoDAO {
         instrucaoSQL.setTime(3, anotacao.getHora());
         instrucaoSQL.setString(4, anotacao.getDescricao());
         instrucaoSQL.setString(5, anotacao.getCor());
+        boolean rs;
+        
+        try {
+            rs = instrucaoSQL.execute();
+            
+        } catch (Exception e) {
+            System.out.println("erro: " + e);
+            return false;
+            
+        }
 
         instrucaoSQL.close();
         connection.close();
+
         return true;
+
     }
 
     public boolean deletar(int id) throws SQLException {

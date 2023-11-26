@@ -5,11 +5,13 @@ import com.google.gson.Gson;
 import spark.Filter;
 import com.anotacoes.DAO.AnotacaoDAO;
 import com.anotacoes.models.Anotacao;
+import com.fasterxml.jackson.databind.ObjectMapper;
 public final class App {
 
     public static void main(String[] args) {
         Gson gson = new Gson();
         AnotacaoDAO anotacaoDAO = new AnotacaoDAO();        
+        ObjectMapper objectMapper = new ObjectMapper();
 
 
         options("/*", (request, response) -> {
@@ -37,15 +39,28 @@ public final class App {
         get("/Anotacao/:id", (req, res) -> gson.toJson(anotacaoDAO.pegarPorId(Integer.parseInt(req.params(":id")))));
 
         post("/Anotacao", (req, res) -> {
-            Anotacao a = gson.fromJson(req.body(), Anotacao.class);
-            return gson.toJson(anotacaoDAO.inserir(a));
+            try {
+                Anotacao a = objectMapper.readValue(req.body(), Anotacao.class);
+                return gson.toJson(anotacaoDAO.inserir(a));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "";
         });
 
         delete("/Anotacao/:id", (req, res) -> anotacaoDAO.deletar(Integer.parseInt(req.params(":id"))));
 
         put("/Anotacao/:id", (req, res) -> {
-            Anotacao a = gson.fromJson(req.body(), Anotacao.class);
-            return anotacaoDAO.editar(a, Integer.parseInt(req.params(":id")));
+            // Anotacao a = gson.fromJson(req.body(), Anotacao.class);
+
+            try {
+                Anotacao a = objectMapper.readValue(req.body(), Anotacao.class);
+                return anotacaoDAO.editar(a, Integer.parseInt(req.params(":id")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "";
+
         });
     }
 }

@@ -6,6 +6,11 @@ import java.sql.Time;
 
 public class Anotacao {
     private int id;
+    @Override
+    public String toString() {
+        return "Anotacao [id=" + id + ", titulo=" + titulo + ", data=" + data + ", hora=" + hora + ", descricao="
+                + descricao + ", cor=" + cor + "]";
+    }
     private String titulo;
     private Date data;
     private Time hora;
