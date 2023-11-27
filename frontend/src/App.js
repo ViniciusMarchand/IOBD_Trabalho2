@@ -3,9 +3,11 @@ import './assets/App.css';
 import Nota from './componentes/Nota';
 import axios from 'axios';
 import Notas from './componentes/Notas';
+import NotasLixeiras from './componentes/NotasLixeira';
 function App() {
 
   const [key, setKey] = useState(0);
+  const [keyLixeira, setKeyLixeira] = useState(0)
   const [titulo, setTitulo] = useState('');
   const [cor, setCor] = useState('#000000');
   const [data, setData] = useState('');
@@ -13,84 +15,106 @@ function App() {
   const [descricao, setDescricao] = useState('');
 
   function atualizar() {
-    console.warn(key)
     setKey(key + 1);
-    console.warn(key)
-
+    setKeyLixeira(keyLixeira + 1);
   }
 
   function enviar(e) {
     e.preventDefault();
     console.warn(hora)
     const nota = {
-      titulo:titulo,
-      cor:cor,
-      data:data,
-      hora:hora,
-      descricao:descricao
+      titulo: titulo,
+      cor: cor,
+      data: data,
+      hora: hora,
+      descricao: descricao
     }
-    console.warn("nota criada")
+    console.warn(nota)
     axios.post('http://localhost:4567/Anotacao', nota).then(res => {
-    atualizar();
-  }).catch(error => console.warn(error.message))
+      atualizar();
+    }).catch(error => console.warn(error.message))
 
   }
 
   return (
     <div className="container-fluid">
       <div className="fundo">
-      <Notas key={key} atualizar={atualizar}/>
-      <button className="botao-adicionar-nota"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" title='Adicionar Nota'>
-        <i className="fa-solid fa-plus"></i>
-      </button>
-      <button className="botao-deletar-nota"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" title='Lixeira'>
-      <i className="fa-solid fa-trash"></i>
-      </button>
+        <Notas key={key} atualizar={atualizar} />
+        <button className="botao-adicionar-nota" data-bs-toggle="modal" data-bs-target="#staticBackdrop" title='Adicionar Nota'>
+          <i className="fa-solid fa-plus"></i>
+        </button>
+        <button className="botao-deletar-nota" data-bs-toggle="modal" data-bs-target="#staticBackdropLixeira" title='Lixeira'>
+          <i className="fa-solid fa-trash"></i>
+        </button>
       </div>
 
 
-    {/* Modal Adicionar */}
-    <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <form onSubmit={(e) => enviar(e)}>
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="staticBackdropLabel">Adicionar Nota</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
+      {/* Modal Adicionar */}
+      <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <form onSubmit={(e) => enviar(e)}>
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="staticBackdropLabel">Adicionar Nota</h1>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
                 <div className="input-label-block">
                   <div className="input-label">
                     <label>Título</label>
-                    <input type="text" placeholder="insira o titulo da nota" onChange={(e) => setTitulo(e.target.value)} required/>
+                    <input type="text" placeholder="insira o titulo da nota" onChange={(e) => setTitulo(e.target.value)} required />
                   </div>
                   <div className="input-label">
                     <label>Cor</label>
-                    <input type="color" placeholder="insira o titulo da nota" onChange={(e) => setCor(e.target.value)} required/>
+                    <input type="color" placeholder="insira o titulo da nota" onChange={(e) => setCor(e.target.value)} required />
                   </div>
                   <div className="input-label">
                     <label>Data</label>
-                    <input type="date" placeholder="insira o titulo da nota" onChange={(e) => setData(e.target.value)} required/>
+                    <input type="date" placeholder="insira o titulo da nota" onChange={(e) => setData(e.target.value)} required />
                   </div>
                   <div className="input-label">
                     <label>Hora</label>
-                    <input type="time" placeholder="insira o titulo da nota" onChange={(e) => setHora(e.target.value)} required step={1}/>
+                    <input type="time" placeholder="insira o titulo da nota" onChange={(e) => setHora(e.target.value)} required step={1} />
                   </div>
                   <div className="input-label">
                     <label>Descrição</label>
-                    <textarea placeholder="insira o titulo da nota" onChange={(e) => setDescricao(e.target.value)} required/>
+                    <textarea placeholder="insira o titulo da nota" onChange={(e) => setDescricao(e.target.value)} required />
                   </div>
                 </div>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-              <button type="submit" className="btn btn-primary" >Adicionar</button>
-            </div>
-          </form>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" className="btn btn-primary" >Adicionar</button>
+              </div>
+            </form>
+          </div>
         </div>
+        
       </div>
+
+      {/* MODAL LIXEIRA */}
+      <div className="modal fade" id="staticBackdropLixeira" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div className="modal-dialog modal-xl">
+          <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="staticBackdropLabel">Lixeira</h1>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+               <NotasLixeiras key={keyLixeira} atualizar={atualizar}/>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" className="btn btn-primary" >Adicionar</button>
+              </div>
+          </div>
+        </div>
+        
+      </div>
+      
     </div>
-    </div>
+
+    
   );
 }
 

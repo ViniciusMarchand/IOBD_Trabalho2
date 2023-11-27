@@ -4,30 +4,25 @@ package com.anotacoes.models;
 import java.sql.Date;
 import java.sql.Time;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Anotacao {
     private int id;
-    @Override
-    public String toString() {
-        return "Anotacao [id=" + id + ", titulo=" + titulo + ", data=" + data + ", hora=" + hora + ", descricao="
-                + descricao + ", cor=" + cor + "]";
-    }
     private String titulo;
     private Date data;
     private Time hora;
     private String descricao;
     private String cor;
+    private boolean lixeira;
 
-    public Anotacao(
-        //int id, String titulo, Date data, Time hora, String descricao, String cor
-        ) {
-        // this.id = id;
-        // this.titulo = titulo;
-        // this.data = data;
-        // this.hora = hora;
-        // this.descricao = descricao;
-        // this.cor = cor;
+    @Override
+    public String toString() {
+        return "Anotacao [id=" + id + ", titulo=" + titulo + ", data=" + data + ", hora=" + hora + ", descricao="
+                + descricao + ", cor=" + cor + ", lixeira=" + lixeira + "]";
     }
 
+    public Anotacao() {
+    }
     public int getId() {
         return id;
     }
@@ -63,6 +58,14 @@ public class Anotacao {
     }
     public void setCor(String cor) {
         this.cor = cor;
+    }
+
+    public boolean isLixeira() {
+        return lixeira;
+    }
+
+    public void setLixeira(boolean lixeira) {
+        this.lixeira = lixeira;
     }
 
     

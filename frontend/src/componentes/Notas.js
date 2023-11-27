@@ -8,7 +8,7 @@ export default function Notas({ atualizar }) {
     const [titulo, setTitulo] = useState('');
     const [data, setData] = useState('');
     const [hora,setHora] = useState('');
-    const [cor, setCor] = useState('');
+    const [cor, setCor] = useState('#000000');
     const [descricao, setDescricao] = useState('');
     const [idEditar, setIdEditar] = useState(0);
 
@@ -47,10 +47,11 @@ export default function Notas({ atualizar }) {
     }, [])
 
 
+
     return <>
         <div className="anotacoes-block">
             {
-                listaNotas.map((nota, i) => (
+                listaNotas.filter(nota => nota.lixeira === false).map((nota, i) => (
                     <Nota nota={nota} atualizar={atualizar} setIdEditar={setIdEditar} editarController={editarController} key={i} />
                 ))
             }

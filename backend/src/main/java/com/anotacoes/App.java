@@ -1,17 +1,25 @@
 package com.anotacoes;
 
 import static spark.Spark.*;
+
+import java.util.TimeZone;
+
 import com.google.gson.Gson;
 import spark.Filter;
 import com.anotacoes.DAO.AnotacaoDAO;
 import com.anotacoes.models.Anotacao;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
 public final class App {
 
     public static void main(String[] args) {
         Gson gson = new Gson();
         AnotacaoDAO anotacaoDAO = new AnotacaoDAO();        
         ObjectMapper objectMapper = new ObjectMapper();
+     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            objectMapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
+            objectMapper.setTimeZone(TimeZone.getDefault()); // Configura o fuso horário local
 
 
         options("/*", (request, response) -> {
@@ -39,8 +47,10 @@ public final class App {
         get("/Anotacao/:id", (req, res) -> gson.toJson(anotacaoDAO.pegarPorId(Integer.parseInt(req.params(":id")))));
 
         post("/Anotacao", (req, res) -> {
+            System.out.println(req.body());
             try {
                 Anotacao a = objectMapper.readValue(req.body(), Anotacao.class);
+                System.out.println(a.getData());
                 return gson.toJson(anotacaoDAO.inserir(a));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -52,7 +62,6 @@ public final class App {
 
         put("/Anotacao/:id", (req, res) -> {
             // Anotacao a = gson.fromJson(req.body(), Anotacao.class);
-
             try {
                 Anotacao a = objectMapper.readValue(req.body(), Anotacao.class);
                 return anotacaoDAO.editar(a, Integer.parseInt(req.params(":id")));
@@ -60,7 +69,12 @@ public final class App {
                 e.printStackTrace();
             }
             return "";
-
         });
+
+        put("/MoverParaLixeira/:id", (req, res) -> anotacaoDAO.moverParaLixeira(Integer.parseInt(req.params(":id"))));
+        
+        put("/TirarDaLixeira/:id", (req, res) -> anotacaoDAO.tirarDaLixeira(Integer.parseInt(req.params(":id"))));
+
+
     }
 }

@@ -13,19 +13,21 @@ public class AnotacaoDAO {
 
     public ArrayList<Anotacao> listar() throws SQLException {
         ArrayList<Anotacao> vetAnotacao = new ArrayList<>();
-        String sql = "select * FROM anotacao;";
+        String sql = "select * FROM anotacao ORDER BY data ASC;";
         Connection connection = new ConexaoPostgreSQL().getConexao();
 
         PreparedStatement instrucaoSQL = connection.prepareStatement(sql);
         ResultSet rs = instrucaoSQL.executeQuery();
         while (rs.next()) {
             Anotacao p = new Anotacao();
+
             p.setId(rs.getInt("id"));
             p.setTitulo(rs.getString("titulo"));
             p.setData(rs.getDate("data"));
             p.setHora(rs.getTime("hora"));
             p.setDescricao(rs.getString("descricao"));
             p.setCor(rs.getString("cor"));
+            p.setLixeira(rs.getBoolean("lixeira"));
 
             vetAnotacao.add(p);
         }
@@ -115,6 +117,30 @@ public class AnotacaoDAO {
         instrucaoSQL.close();
         connection.close();
         return a;
-
     }
+
+    public boolean moverParaLixeira(int id) throws SQLException {
+        String sql = "UPDATE anotacao SET lixeira = true WHERE id = ?;";
+        Connection connection = new ConexaoPostgreSQL().getConexao();
+
+        PreparedStatement instrucaoSQL = connection.prepareStatement(sql);
+        instrucaoSQL.setInt(1, id);
+        int resultado = instrucaoSQL.executeUpdate();
+        instrucaoSQL.close();
+        connection.close();
+        return resultado == 1;
+    }
+
+        public boolean tirarDaLixeira(int id) throws SQLException {
+        String sql = "UPDATE anotacao SET lixeira = false WHERE id = ?;";
+        Connection connection = new ConexaoPostgreSQL().getConexao();
+
+        PreparedStatement instrucaoSQL = connection.prepareStatement(sql);
+        instrucaoSQL.setInt(1, id);
+        int resultado = instrucaoSQL.executeUpdate();
+        instrucaoSQL.close();
+        connection.close();
+        return resultado == 1;
+    }
+    
 }
