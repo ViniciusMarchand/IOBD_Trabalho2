@@ -13,7 +13,7 @@ public class AnotacaoDAO {
 
     public ArrayList<Anotacao> listar() throws SQLException {
         ArrayList<Anotacao> vetAnotacao = new ArrayList<>();
-        String sql = "select * FROM anotacao ORDER BY data ASC;";
+        String sql = "select * FROM anotacao ORDER BY data, hora ASC;";
         Connection connection = new ConexaoPostgreSQL().getConexao();
 
         PreparedStatement instrucaoSQL = connection.prepareStatement(sql);
@@ -39,7 +39,6 @@ public class AnotacaoDAO {
     public boolean inserir(Anotacao anotacao) throws SQLException {
         String sql = "INSERT INTO anotacao (titulo, data, hora, descricao, cor) VALUES (?,?,?,?,?);";
         Connection connection = new ConexaoPostgreSQL().getConexao();
-
         PreparedStatement instrucaoSQL = connection.prepareStatement(sql);
         instrucaoSQL.setString(1, anotacao.getTitulo());
         instrucaoSQL.setDate(2, anotacao.getData());

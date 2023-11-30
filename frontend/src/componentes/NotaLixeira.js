@@ -27,8 +27,8 @@ export default function NotaLixeira({ nota, atualizar, setIdEditar, editarContro
             <i className="fa-solid fa-calendar-days"> {" " + nota.data}</i>
           </div>
         </div>
-        <button onClick={() => deletar(nota.id)}>Deletar permanentemente</button>
-        <button onClick={() => tirarDaLixeira(nota.id)}>Recuperar</button>
+        <button className="botao-nota" onClick={() => deletar(nota.id)}>Deletar permanentemente</button>
+        <button className="botao-nota" onClick={() => tirarDaLixeira(nota.id)}>Recuperar</button>
 
       </div>
     </div>
