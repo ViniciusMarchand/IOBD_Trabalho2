@@ -10,7 +10,8 @@ CREATE DATABASE anotacoes;
 \c anotacoes;
 
 CREATE TABLE anotacao (
-  titulo TEXT PRIMARY KEY,
+  id SERIAL  PRIMARY KEY,
+  titulo TEXT,
   descricao TEXT,
   cor TEXT,
   data DATE,
