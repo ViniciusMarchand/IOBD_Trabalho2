@@ -7,6 +7,8 @@ Crie o banco de dados do projeto com os seguintes comandos:
 
 CREATE DATABASE anotacoes; 
 
+\c anotacoes;
+
 CREATE TABLE anotacao (
   titulo TEXT PRIMARY KEY,
   descricao TEXT,
