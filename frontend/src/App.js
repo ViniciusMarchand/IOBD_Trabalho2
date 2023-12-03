@@ -105,7 +105,7 @@ function App() {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="submit" className="btn btn-primary" >Adicionar</button>
+              
               </div>
           </div>
         </div>
